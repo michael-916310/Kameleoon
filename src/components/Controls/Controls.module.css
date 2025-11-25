@@ -1,0 +1,186 @@
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--controls-bg, #f5f5f5);
+  border-radius: 8px;
+}
+
+.selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.selectorLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color, #333);
+  white-space: nowrap;
+}
+
+.checkboxGroup {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-color, #333);
+}
+
+.checkbox {
+  cursor: pointer;
+}
+
+.colorIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.variationName {
+  user-select: none;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.periodButton {
+  padding: 6px 16px;
+  border: 1px solid var(--border-color, #ccc);
+  background: var(--button-bg, #fff);
+  color: var(--text-color, #333);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.periodButton:hover {
+  background: var(--button-hover-bg, #f0f0f0);
+}
+
+.periodButton.active {
+  background: var(--button-active-bg, #3b82f6);
+  color: #fff;
+  border-color: var(--button-active-bg, #3b82f6);
+}
+
+.select {
+  padding: 6px 12px;
+  border: 1px solid var(--border-color, #ccc);
+  background: var(--button-bg, #fff);
+  color: var(--text-color, #333);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.zoomControls {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.zoomButton {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-color, #ccc);
+  background: var(--button-bg, #fff);
+  color: var(--text-color, #333);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.zoomButton:hover:not(:disabled) {
+  background: var(--button-hover-bg, #f0f0f0);
+}
+
+.zoomButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.themeToggle {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-color, #ccc);
+  background: var(--button-bg, #fff);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.themeToggle:hover {
+  background: var(--button-hover-bg, #f0f0f0);
+}
+
+.exportButton {
+  padding: 6px 16px;
+  border: 1px solid var(--border-color, #ccc);
+  background: var(--button-bg, #fff);
+  color: var(--text-color, #333);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.exportButton:hover {
+  background: var(--button-hover-bg, #f0f0f0);
+}
+
+[data-theme='dark'] {
+  --controls-bg: #2d2d2d;
+  --text-color: #e0e0e0;
+  --border-color: #555;
+  --button-bg: #3d3d3d;
+  --button-hover-bg: #4d4d4d;
+  --button-active-bg: #3b82f6;
+}
+
+[data-theme='light'] {
+  --controls-bg: #f5f5f5;
+  --text-color: #333;
+  --border-color: #ccc;
+  --button-bg: #fff;
+  --button-hover-bg: #f0f0f0;
+  --button-active-bg: #3b82f6;
+}
+
+@media (min-width: 671px) and (max-width: 1300px) {
+  .controls {
+    gap: 16px;
+    padding: 12px;
+  }
+
+  .selector {
+    gap: 8px;
+  }
+
+  .checkboxGroup {
+    gap: 12px;
+  }
+}
+
