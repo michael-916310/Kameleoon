@@ -1,7 +1,9 @@
 import React, { useRef } from 'react';
 import {
   LineChart,
+  AreaChart,
   Line,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -42,6 +44,14 @@ const Chart: React.FC<ChartProps> = ({
 }) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
+  const formatXAxis = (tickItem: string) => {
+    return formatDateShort(tickItem);
+  };
+
+  const formatYAxis = (tickItem: number) => {
+    return `${tickItem}%`;
+  };
+
   const renderLine = (variation: ProcessedVariation) => {
     const commonProps = {
       key: variation.id,
@@ -59,9 +69,9 @@ const Chart: React.FC<ChartProps> = ({
 
     if (lineStyle === 'area') {
       return (
-        <Line
+        <Area
           {...commonProps}
-          type="monotone"
+          type="linear"
           fill={variation.color}
           fillOpacity={0.1}
         />
@@ -71,57 +81,59 @@ const Chart: React.FC<ChartProps> = ({
     return <Line {...commonProps} type="linear" />;
   };
 
-  const formatXAxis = (tickItem: string) => {
-    return formatDateShort(tickItem);
-  };
+  const chartContent = (
+    <>
+      <CartesianGrid strokeDasharray="3 3" className={styles.grid} />
+      <XAxis
+        dataKey="date"
+        tickFormatter={formatXAxis}
+        domain={
+          zoomDomain && data[zoomDomain[0]] && data[zoomDomain[1]]
+            ? [data[zoomDomain[0]].date, data[zoomDomain[1]].date]
+            : ['dataMin', 'dataMax']
+        }
+        className={styles.axis}
+      />
+      <YAxis
+        domain={[dataRange.minY, dataRange.maxY]}
+        tickFormatter={formatYAxis}
+        className={styles.axis}
+      />
+      <Tooltip
+        content={<CustomTooltip variations={variations} period={period} />}
+        cursor={{ stroke: '#666', strokeWidth: 1, strokeDasharray: '5 5' }}
+      />
+      {activeIndex !== null && data[activeIndex] && (
+        <ReferenceLine
+          x={data[activeIndex].date}
+          stroke="#666"
+          strokeWidth={1}
+          strokeDasharray="5 5"
+        />
+      )}
+      {variations.map(renderLine)}
+    </>
+  );
 
-  const formatYAxis = (tickItem: number) => {
-    return `${tickItem}%`;
+  const chartProps = {
+    data,
+    margin: { top: 20, right: 30, left: 20, bottom: 20 },
+    onMouseMove: (state: any) => {
+      if (state && state.activeTooltipIndex !== undefined) {
+        onHover?.(state.activeTooltipIndex);
+      }
+    },
+    onMouseLeave: () => onHover?.(null),
   };
 
   return (
     <div ref={chartRef} className={styles.chartContainer}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          data={data}
-          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
-          onMouseMove={(state) => {
-            if (state && state.activeTooltipIndex !== undefined) {
-              onHover?.(state.activeTooltipIndex);
-            }
-          }}
-          onMouseLeave={() => onHover?.(null)}
-        >
-          <CartesianGrid strokeDasharray="3 3" className={styles.grid} />
-          <XAxis
-            dataKey="date"
-            tickFormatter={formatXAxis}
-            domain={
-              zoomDomain && data[zoomDomain[0]] && data[zoomDomain[1]]
-                ? [data[zoomDomain[0]].date, data[zoomDomain[1]].date]
-                : ['dataMin', 'dataMax']
-            }
-            className={styles.axis}
-          />
-          <YAxis
-            domain={[dataRange.minY, dataRange.maxY]}
-            tickFormatter={formatYAxis}
-            className={styles.axis}
-          />
-          <Tooltip
-            content={<CustomTooltip variations={variations} period={period} />}
-            cursor={{ stroke: '#666', strokeWidth: 1, strokeDasharray: '5 5' }}
-          />
-          {activeIndex !== null && data[activeIndex] && (
-            <ReferenceLine
-              x={data[activeIndex].date}
-              stroke="#666"
-              strokeWidth={1}
-              strokeDasharray="5 5"
-            />
-          )}
-          {variations.map(renderLine)}
-        </LineChart>
+        {lineStyle === 'area' ? (
+          <AreaChart {...chartProps}>{chartContent}</AreaChart>
+        ) : (
+          <LineChart {...chartProps}>{chartContent}</LineChart>
+        )}
       </ResponsiveContainer>
     </div>
   );
