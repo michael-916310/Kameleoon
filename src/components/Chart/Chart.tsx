@@ -29,7 +29,6 @@ interface ChartProps {
   };
   onHover?: (activeIndex: number | null) => void;
   activeIndex: number | null;
-  zoomDomain?: [number, number];
 }
 
 const Chart: React.FC<ChartProps> = ({
@@ -40,7 +39,6 @@ const Chart: React.FC<ChartProps> = ({
   dataRange,
   onHover,
   activeIndex,
-  zoomDomain,
 }) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
@@ -87,11 +85,7 @@ const Chart: React.FC<ChartProps> = ({
       <XAxis
         dataKey="date"
         tickFormatter={formatXAxis}
-        domain={
-          zoomDomain && data[zoomDomain[0]] && data[zoomDomain[1]]
-            ? [data[zoomDomain[0]].date, data[zoomDomain[1]].date]
-            : ['dataMin', 'dataMax']
-        }
+        domain={['dataMin', 'dataMax']}
         className={styles.axis}
       />
       <YAxis
